@@ -1,0 +1,38 @@
+version: '3.1'
+services:
+  web:
+    image: [baraktzoref/final_project_fe:latest]
+    container_name: web_app
+    ports:
+      - '3000:3000'
+    networks:
+      - network-backend
+    depends_on:
+      - api
+  api:
+    image: [baraktzoref/final_project_be:latest]
+    ports:
+      - '3001:3001'
+    networks:
+      - network-backend
+    depends_on:
+      - mongo
+  mongo:
+    image: [mongo: latest]
+    restart: always
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGODB_INITDB_ROOT_USERNAME: username
+      MONGODB_INITDB_ROOT_PASSWORD: password
+    # uncomment following lines to access db locally
+    # ports:
+    #   - 27017:27017
+    networks:
+      - network-backend
+
+networks:
+  network-backend:
+  
+volumes:
+  mongodb_data:
